@@ -54,7 +54,7 @@ var Slider = React.createClass({
 
   getInitialState() {
     this.optionsArray = this.props.optionsArray || converter.createArray(this.props.min,this.props.max,this.props.step);
-    this.stepLength = this.props.sliderLength/this.optionsArray.length;
+    this.stepLength = this.props.sliderLength / (this.optionsArray.length - 1);
 
     var initialValues = this.props.values.map(value => converter.valueToPosition(value,this.optionsArray,this.props.sliderLength));
 
@@ -100,7 +100,7 @@ var Slider = React.createClass({
   set(config) {
     var { max, min, optionsArray, step, values } = config || this.props;
     this.optionsArray = optionsArray || converter.createArray(min, max, step);
-    this.stepLength = this.props.sliderLength/this.optionsArray.length;
+    this.stepLength = this.props.sliderLength / (this.optionsArray.length - 1);
 
     var initialValues = values.map(value => converter.valueToPosition(value,this.optionsArray,this.props.sliderLength));
 
@@ -205,8 +205,8 @@ var Slider = React.createClass({
     var {selectedStyle, unselectedStyle, sliderLength} = this.props;
     var twoMarkers = positionTwo;
 
-    var fixedPositionOne = Math.floor(positionOne / this.stepLength) * this.stepLength;
-    var fixedPositionTwo = Math.floor(positionTwo / this.stepLength) * this.stepLength;
+    var fixedPositionOne = this.optionsArray.findIndex(x => x === this.state.valueOne) * this.stepLength;
+    var fixedPositionTwo = this.optionsArray.findIndex(x => x === this.state.valueTwo) * this.stepLength;
 
     var trackOneLength = fixedPositionOne;
     var trackOneStyle = twoMarkers ? unselectedStyle : selectedStyle;
